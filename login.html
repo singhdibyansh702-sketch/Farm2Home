@@ -29,68 +29,104 @@
     </nav>
 
     <main>
-      <div class="intro-text">
-        <h1 id="txt-title">Welcome to Farm2Home</h1>
-        <p id="txt-subtitle">
-          Select your profile type to access the dashboard.
-        </p>
-      </div>
-
-      <div class="card-container">
-        <div class="card">
-          <div class="card-image">
-            <img
-              src="https://sl.bing.net/i4oWpIvTnbM"
-              alt="Farmer"
-              onerror="
-                this.src =
-                  'https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=800&auto=format&fit=crop'
-              "
-            />
-          </div>
-          <div class="card-body">
-            <h2 id="txt-farmer">Farmer</h2>
-            <p id="txt-farmer-desc">List crops and manage sales.</p>
-
-            <button class="btn-primary">
-              <span id="txt-btn-1">Login as Farmer</span> &rarr;
-            </button>
-
-            <div class="auth-switch">
-              <span id="txt-new-1">New here?</span>
-              <a href="#" id="lnk-reg-1">Register &gt;</a>
-            </div>
-          </div>
+      <div id="initial-view">
+        <div class="intro-text">
+          <h1 id="txt-title">Welcome to Farm2Home</h1>
+          <p id="txt-subtitle">
+            Select your profile type to access the dashboard.
+          </p>
         </div>
 
-        <div class="card">
-          <div class="card-image">
-            <img
-              src="https://sl.bing.net/czYfpDTj2yW"
-              alt="Customer"
-              onerror="
-                this.src =
-                  'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop'
-              "
-            />
+        <div class="card-container">
+          <div class="card card-farmer-theme">
+            <div class="card-image">
+              <img
+                src="https://sl.bing.net/i4oWpIvTnbM"
+                alt="Farmer"
+                onerror="
+                  this.src =
+                    'https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=800&auto=format&fit=crop'
+                "
+              />
+            </div>
+            <div class="card-body">
+              <h2 id="txt-farmer">Farmer</h2>
+              <p id="txt-farmer-desc">List crops and manage sales.</p>
+              <button class="btn-primary" onclick="showLoginScreen('farmer')">
+                <span id="txt-btn-1">Login as Farmer</span> &rarr;
+              </button>
+            </div>
           </div>
-          <div class="card-body">
-            <h2 id="txt-customer">Customer</h2>
-            <p id="txt-customer-desc">Order fresh straight from the source.</p>
 
-            <button class="btn-secondary">
-              <span id="txt-btn-2">Login as Customer</span> &rarr;
-            </button>
-
-            <div class="auth-switch">
-              <span id="txt-new-2">New here?</span>
-              <a href="#" id="lnk-reg-2">Register &gt;</a>
+          <div class="card card-customer-theme">
+            <div class="card-image">
+              <img
+                src="https://sl.bing.net/czYfpDTj2yW"
+                alt="Customer"
+                onerror="
+                  this.src =
+                    'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop'
+                "
+              />
+            </div>
+            <div class="card-body">
+              <h2 id="txt-customer">Customer</h2>
+              <p id="txt-customer-desc">
+                Order fresh straight from the source.
+              </p>
+              <button
+                class="btn-secondary"
+                onclick="showLoginScreen('customer')"
+              >
+                <span id="txt-btn-2">Login as Customer</span> &rarr;
+              </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="footer-links">
+      <div id="login-overlay" class="login-overlay-container hidden">
+        <div class="split-layout">
+          <div class="info-panel" id="dynamic-info-panel">
+            <div class="info-content">
+              <img id="login-img" src="" alt="Role Icon" />
+              <h2 id="login-role-title">Role Name</h2>
+              <p id="login-role-desc">Description goes here.</p>
+            </div>
+          </div>
+
+          <div class="form-panel">
+            <div class="back-link-wrapper">
+              <span class="back-link" onclick="resetView()">
+                &larr; <span id="txt-back">Back</span>
+              </span>
+            </div>
+
+            <div class="form-content-wrapper">
+              <h2 id="login-form-header">Login</h2>
+
+              <div class="login-form-fields">
+                <label id="txt-label-mobile">Mobile Number</label>
+                <input
+                  type="tel"
+                  placeholder="+91 XXXXX XXXXX"
+                  class="input-field"
+                />
+
+                <button id="dynamic-otp-btn" class="btn-primary full-width">
+                  <span id="txt-otp">Send OTP</span>
+                </button>
+
+                <div class="auth-switch">
+                  <span id="txt-new">New here?</span>
+                  <a href="#" id="dynamic-reg-link">Register &gt;</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer-links" id="main-footer">
         <a href="#" id="txt-guest">Guest View</a> •
         <a href="#" id="txt-help">Need Help?</a>
       </div>

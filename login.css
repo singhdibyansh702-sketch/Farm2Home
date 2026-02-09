@@ -1,21 +1,18 @@
 /* =========================================
-   1. Variables & Global Reset
+   1. Global Settings & Existing Styles
    ========================================= */
 :root {
-    --green-primary: #2d6a4f;   /* Deep Farm Green */
-    --green-light: #d8f3dc;     /* Light Mint */
-    --orange-accent: #e07a5f;   /* Warm Harvest Orange */
-    --text-dark: #1b4332;       /* Dark Green Text */
+    --green-primary: #2d6a4f;
+    --green-light: #d8f3dc;
+    --orange-accent: #e07a5f;
+    --orange-light: #fff3e0;
+    --text-dark: #1b4332;
     --white: #ffffff;
     --card-shadow: 0 15px 35px rgba(0,0,0,0.15);
     --font-main: 'Outfit', sans-serif;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
     font-family: var(--font-main);
@@ -27,292 +24,185 @@ body {
     overflow-x: hidden;
 }
 
-/* =========================================
-   2. Background Image & Overlay
-   ========================================= */
-.page-background {
-    position: fixed;
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    /* High-quality farm landscape */
-    background-image: url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1600&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -2;
+/* Keep existing Background & Navbar styles... */
+.page-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2; }
+.page-background::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(245, 255, 245, 0.85); backdrop-filter: blur(5px); z-index: -1; }
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+.logo { display: flex; flex-direction: column; align-items: flex-start; }
+.logo-main { font-size: 1.8rem; font-weight: 700; color: var(--green-primary); white-space: nowrap; line-height: 1.1; }
+.highlight { color: var(--orange-accent); }
+.tagline { font-size: 0.8rem; color: #555; letter-spacing: 1px; text-transform: uppercase; }
+select { padding: 8px 16px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
+
+/* Main Layout Positioning */
+main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; position: relative; }
+
+/* Initial View Wrapper - Fades out when login starts */
+#initial-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 1;
+    transform: scale(1);
+}
+#initial-view.faded {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
 }
 
-/* White overlay to make text readable */
-.page-background::after {
-    content: "";
+.intro-text { text-align: center; margin-bottom: 40px; background: rgba(255, 255, 255, 0.6); padding: 20px 40px; border-radius: 16px; backdrop-filter: blur(5px); }
+h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--green-primary); }
+.intro-text p { font-size: 1.1rem; color: #444; }
+
+/* Existing Card Styles */
+.card-container { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 900px; }
+.card { background: var(--white); width: 320px; border-radius: 20px; overflow: hidden; box-shadow: var(--card-shadow); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+.card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(45, 106, 79, 0.25); }
+.card-image { width: 100%; aspect-ratio: 1 / 1; background-color: #f0f7f4; overflow: hidden; position: relative; }
+.card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.card:hover .card-image img { transform: scale(1.05); }
+.card-body { padding: 25px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+.card-body h2 { font-size: 1.6rem; margin-bottom: 8px; color: var(--green-primary); }
+.card-body p { font-size: 0.95rem; color: #666; margin-bottom: 25px; }
+
+/* Buttons & Links */
+button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
+.btn-primary { background-color: var(--green-primary); color: white; }
+.btn-primary:hover { background-color: #1b4332; }
+.btn-secondary { background-color: var(--orange-accent); color: white; }
+.btn-secondary:hover { background-color: #c45a3f; }
+.footer-links { margin-top: 50px; font-size: 0.9rem; padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border-radius: 20px; backdrop-filter: blur(5px); transition: opacity 0.3s ease;}
+.footer-links a { color: var(--green-primary); text-decoration: none; font-weight: 600; margin: 0 5px; }
+.footer-links.faded { opacity: 0; }
+
+
+/* =========================================
+   NEW SLIDING LOGIN OVERLAY STYLES
+   ========================================= */
+
+/*The container that holds the split view. Sits on top of initial view.*/
+.login-overlay-container {
     position: absolute;
-    top: 0; 
-    left: 0; 
-    width: 100%; 
-    height: 100%;
-    background: rgba(245, 255, 245, 0.85); /* Greenish-white tint */
-    backdrop-filter: blur(5px); 
-    z-index: -1;
-}
-
-/* =========================================
-   3. Navigation Bar
-   ========================================= */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 5%;
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-}
-
-.logo {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.logo-main {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--green-primary);
-    white-space: nowrap; 
-    line-height: 1.1;
-}
-
-.highlight {
-    color: var(--orange-accent);
-}
-
-.tagline {
-    font-size: 0.8rem;
-    color: #555;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-select {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    background: white;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.9rem;
-}
-
-/* =========================================
-   4. Main Content Layout
-   ========================================= */
-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 20px;
-}
-
-.intro-text {
-    text-align: center;
-    margin-bottom: 40px;
-    background: rgba(255, 255, 255, 0.6); 
-    padding: 20px 40px;
-    border-radius: 16px;
-    backdrop-filter: blur(5px);
-}
-
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    color: var(--green-primary);
-}
-
-.intro-text p {
-    font-size: 1.1rem;
-    color: #444;
-}
-
-/* =========================================
-   5. Card Styling
-   ========================================= */
-.card-container {
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    flex-wrap: wrap;
-    width: 100%;
+    top: 50%;
+    left: 50%;
+    /* Centers the overlay */
+    transform: translate(-50%, -50%);
+    width: 90%;
     max-width: 900px;
+    height: 550px;
+    z-index: 50;
+    /* Hidden state */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease 0.2s; /* Delayed fade in */
 }
 
-.card {
-    background: var(--white);
-    width: 320px;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--card-shadow);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.05);
+/* Active state - becomes visible */
+.login-overlay-container.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* The actual split-screen box */
+.split-layout {
     display: flex;
-    flex-direction: column;
-}
-
-.card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 25px 50px rgba(45, 106, 79, 0.25);
-}
-
-/* Image Container */
-.card-image {
-    width: 100%;
-    /* Square aspect ratio for profile-style images */
-    aspect-ratio: 1 / 1; 
-    background-color: #f0f7f4;
-    overflow: hidden;
-    position: relative;
-}
-
-.card-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
-    transition: transform 0.5s ease;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.2);
 }
 
-.card:hover .card-image img {
-    transform: scale(1.05);
-}
-
-.card-body {
-    padding: 25px;
+/* ----- LEFT SIDE: COLORED INFO PANEL ----- */
+.info-panel {
+    flex: 4; /* Takes 40% width */
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+/* Themes dynamically added by JS */
+.farmer-theme-bg { background-color: var(--green-primary); }
+.customer-theme-bg { background-color: var(--orange-accent); }
+
+.info-content img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%; /* Circular image like reference */
+    border: 4px solid rgba(255,255,255,0.3);
+    margin-bottom: 25px;
+}
+
+.info-content h2 { font-size: 2rem; margin-bottom: 10px; color: white; }
+.info-content p { font-size: 1.1rem; opacity: 0.9; }
+
+
+/* ----- RIGHT SIDE: WHITE SLIDING FORM PANEL ----- */
+.form-panel {
+    flex: 6; /* Takes 60% width */
+    background: white;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    
+    /* --- THE SLIDE ANIMATION --- */
+    /* Start pushed off-screen to the right */
+    transform: translateX(100%);
+    /* Smooth Bezier curve for elegant sliding */
+    transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* When container is active, slide form back to center (0) */
+.login-overlay-container.active .form-panel {
+    transform: translateX(0);
+}
+
+.back-link-wrapper { margin-bottom: 30px; }
+.back-link { color: #888; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s; }
+.back-link:hover { color: var(--text-dark); }
+
+.form-content-wrapper {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
-}
-
-.card-body h2 {
-    font-size: 1.6rem;
-    margin-bottom: 8px;
-    color: var(--green-primary);
-}
-
-.card-body p {
-    font-size: 0.95rem;
-    color: #666;
-    margin-bottom: 25px;
-}
-
-/* =========================================
-   6. Buttons
-   ========================================= */
-button {
+    max-width: 400px;
+    margin: 0 auto; /* Center form horizontally in panel */
     width: 100%;
-    padding: 14px;
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
 }
 
-/* Farmer Button (Green) */
-.btn-primary {
-    background-color: var(--green-primary);
-    color: white;
-}
-.btn-primary:hover {
-    background-color: #1b4332;
-}
+.form-content-wrapper h2 { color: var(--text-dark); margin-bottom: 30px; font-size: 1.8rem; }
 
-/* Customer Button (Orange) */
-.btn-secondary {
-    background-color: var(--orange-accent);
-    color: white;
-}
-.btn-secondary:hover {
-    background-color: #c45a3f;
-}
+.login-form-fields label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-dark); }
+.input-field { width: 100%; padding: 14px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 25px; font-size: 1rem; background: #f9f9f9; }
+.input-field:focus { outline: 2px solid var(--green-primary); border-color: transparent; }
+.full-width { width: 100%; }
 
-/* =========================================
-   7. Register / New Here Links
-   ========================================= */
-.auth-switch {
-    margin-top: 15px;
-    font-size: 0.9rem;
-    color: #666;
-}
+/* Register Links in the new form styling */
+.auth-switch { margin-top: 20px; font-size: 0.9rem; color: #666; text-align: center; }
+.auth-switch a { text-decoration: none; font-weight: 700; margin-left: 5px; transition: color 0.2s;}
+.auth-switch a:hover { text-decoration: underline; }
 
-.auth-switch a {
-    text-decoration: none;
-    font-weight: 700;
-    margin-left: 5px;
-    transition: color 0.2s;
-}
+/* Dynamic text colors for register link */
+.text-green { color: var(--green-primary) !important; }
+.text-orange { color: var(--orange-accent) !important; }
 
-/* Farmer Register Link (Green) */
-.card:nth-child(1) .auth-switch a {
-    color: var(--green-primary);
-}
-
-/* Customer Register Link (Orange) */
-.card:nth-child(2) .auth-switch a {
-    color: var(--orange-accent);
-}
-
-.auth-switch a:hover {
-    text-decoration: underline;
-}
-
-/* =========================================
-   8. Footer
-   ========================================= */
-.footer-links {
-    margin-top: 50px;
-    font-size: 0.9rem;
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 20px;
-    backdrop-filter: blur(5px);
-}
-
-.footer-links a {
-    color: var(--green-primary);
-    text-decoration: none;
-    font-weight: 600;
-    margin: 0 5px;
-}
-
-.footer-links a:hover {
-    text-decoration: underline;
-}
-
-/* =========================================
-   9. Mobile Responsiveness
-   ========================================= */
-@media (max-width: 768px) {
-    .card-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    h1 {
-        font-size: 2rem;
-    }
-    
-    .intro-text {
-        padding: 15px;
-    }
+/* Mobile Response */
+@media (max-width: 850px) {
+    .login-overlay-container { height: auto; min-height: 600px; top: 55%;}
+    .split-layout { flex-direction: column; }
+    /* On mobile, stack them instead of sliding sideways */
+    .info-panel { flex: none; padding: 30px; }
+    .info-content img { width: 120px; height: 120px; margin-bottom: 15px; }
+    .form-panel { flex: none; padding: 30px; transform: translateY(100px); opacity: 0; transition: all 0.5s ease 0.3s; }
+    /* Slide up on mobile */
+    .login-overlay-container.active .form-panel { transform: translateY(0); opacity: 1;}
 }
