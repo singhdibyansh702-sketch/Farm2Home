@@ -1,28 +1,42 @@
+/* =========================================
+   1. Variables & Global Reset
+   ========================================= */
 :root {
-    --green-primary: #2d6a4f;
-    --green-light: #d8f3dc;
-    --orange-accent: #e07a5f;
-    --text-dark: #1b4332;
+    --green-primary: #2d6a4f;   /* Deep Farm Green */
+    --green-light: #d8f3dc;     /* Light Mint */
+    --orange-accent: #e07a5f;   /* Warm Harvest Orange */
+    --text-dark: #1b4332;       /* Dark Green Text */
     --white: #ffffff;
     --card-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    --font-main: 'Outfit', sans-serif;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 body {
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-main);
     color: var(--text-dark);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow-x: hidden;
 }
 
-/* --- SCROLLABLE BACKGROUND FIX --- */
+/* =========================================
+   2. Background Image & Overlay
+   ========================================= */
 .page-background {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    /* Nice farm landscape */
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    /* High-quality farm landscape */
     background-image: url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1600&auto=format&fit=crop');
     background-size: cover;
     background-position: center;
@@ -30,17 +44,22 @@ body {
     z-index: -2;
 }
 
-/* Overlay to make text readable */
+/* White overlay to make text readable */
 .page-background::after {
     content: "";
     position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(245, 255, 245, 0.85); 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background: rgba(245, 255, 245, 0.85); /* Greenish-white tint */
     backdrop-filter: blur(5px); 
     z-index: -1;
 }
 
-/* --- Navigation --- */
+/* =========================================
+   3. Navigation Bar
+   ========================================= */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -59,7 +78,6 @@ body {
     align-items: flex-start;
 }
 
-/* HEADER FIX: Ensures Farm 2 Home is on one line */
 .logo-main {
     font-size: 1.8rem;
     font-weight: 700;
@@ -68,7 +86,9 @@ body {
     line-height: 1.1;
 }
 
-.highlight { color: var(--orange-accent); }
+.highlight {
+    color: var(--orange-accent);
+}
 
 .tagline {
     font-size: 0.8rem;
@@ -83,9 +103,13 @@ select {
     border: 1px solid #ccc;
     background: white;
     cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
 }
 
-/* --- Main Layout --- */
+/* =========================================
+   4. Main Content Layout
+   ========================================= */
 main {
     flex: 1;
     display: flex;
@@ -98,13 +122,14 @@ main {
 .intro-text {
     text-align: center;
     margin-bottom: 40px;
-    background: rgba(255,255,255,0.6); 
+    background: rgba(255, 255, 255, 0.6); 
     padding: 20px 40px;
     border-radius: 16px;
+    backdrop-filter: blur(5px);
 }
 
 h1 {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     margin-bottom: 10px;
     color: var(--green-primary);
 }
@@ -114,7 +139,9 @@ h1 {
     color: #444;
 }
 
-/* --- Card Grid --- */
+/* =========================================
+   5. Card Styling
+   ========================================= */
 .card-container {
     display: flex;
     gap: 40px;
@@ -132,6 +159,8 @@ h1 {
     box-shadow: var(--card-shadow);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
@@ -139,10 +168,10 @@ h1 {
     box-shadow: 0 25px 50px rgba(45, 106, 79, 0.25);
 }
 
-/* --- IMAGE FIX --- */
+/* Image Container */
 .card-image {
     width: 100%;
-    /* 1:1 Aspect ratio (Square) fits illustration/icons best */
+    /* Square aspect ratio for profile-style images */
     aspect-ratio: 1 / 1; 
     background-color: #f0f7f4;
     overflow: hidden;
@@ -152,7 +181,6 @@ h1 {
 .card-image img {
     width: 100%;
     height: 100%;
-    /* 'Cover' ensures the image fills the square without stretching */
     object-fit: cover; 
     transition: transform 0.5s ease;
 }
@@ -164,6 +192,10 @@ h1 {
 .card-body {
     padding: 25px;
     text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .card-body h2 {
@@ -178,7 +210,9 @@ h1 {
     margin-bottom: 25px;
 }
 
-/* --- Buttons --- */
+/* =========================================
+   6. Buttons
+   ========================================= */
 button {
     width: 100%;
     padding: 14px;
@@ -188,31 +222,97 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
+/* Farmer Button (Green) */
 .btn-primary {
     background-color: var(--green-primary);
     color: white;
 }
-.btn-primary:hover { background-color: #1b4332; }
+.btn-primary:hover {
+    background-color: #1b4332;
+}
 
+/* Customer Button (Orange) */
 .btn-secondary {
     background-color: var(--orange-accent);
     color: white;
 }
-.btn-secondary:hover { background-color: #c45a3f; }
+.btn-secondary:hover {
+    background-color: #c45a3f;
+}
 
-/* --- Footer --- */
+/* =========================================
+   7. Register / New Here Links
+   ========================================= */
+.auth-switch {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.auth-switch a {
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 5px;
+    transition: color 0.2s;
+}
+
+/* Farmer Register Link (Green) */
+.card:nth-child(1) .auth-switch a {
+    color: var(--green-primary);
+}
+
+/* Customer Register Link (Orange) */
+.card:nth-child(2) .auth-switch a {
+    color: var(--orange-accent);
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   8. Footer
+   ========================================= */
 .footer-links {
     margin-top: 50px;
     font-size: 0.9rem;
     padding: 10px 20px;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 20px;
+    backdrop-filter: blur(5px);
 }
 
 .footer-links a {
     color: var(--green-primary);
     text-decoration: none;
     font-weight: 600;
+    margin: 0 5px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   9. Mobile Responsiveness
+   ========================================= */
+@media (max-width: 768px) {
+    .card-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .intro-text {
+        padding: 15px;
+    }
 }
