@@ -1,5 +1,5 @@
 /* =========================================
-   1. Global Settings & Existing Styles
+   1. Global Settings & Reset
    ========================================= */
 :root {
     --green-primary: #2d6a4f;
@@ -24,7 +24,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Keep existing Background & Navbar styles... */
+/* Background & Navbar */
 .page-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2; }
 .page-background::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(245, 255, 245, 0.85); backdrop-filter: blur(5px); z-index: -1; }
 .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
@@ -34,17 +34,16 @@ body {
 .tagline { font-size: 0.8rem; color: #555; letter-spacing: 1px; text-transform: uppercase; }
 select { padding: 8px 16px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
 
-/* Main Layout Positioning */
-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; position: relative; }
+/* Main Layout */
+main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; position: relative; width: 100%; }
 
-/* Initial View Wrapper - Fades out when login starts */
+/* Initial View Wrapper */
 #initial-view {
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    opacity: 1;
-    transform: scale(1);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    width: 100%;
 }
 #initial-view.faded {
     opacity: 0;
@@ -56,7 +55,7 @@ main { flex: 1; display: flex; flex-direction: column; align-items: center; just
 h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--green-primary); }
 .intro-text p { font-size: 1.1rem; color: #444; }
 
-/* Existing Card Styles */
+/* Cards */
 .card-container { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 900px; }
 .card { background: var(--white); width: 320px; border-radius: 20px; overflow: hidden; box-shadow: var(--card-shadow); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; }
 .card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(45, 106, 79, 0.25); }
@@ -67,7 +66,7 @@ h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--green-primary); }
 .card-body h2 { font-size: 1.6rem; margin-bottom: 8px; color: var(--green-primary); }
 .card-body p { font-size: 0.95rem; color: #666; margin-bottom: 25px; }
 
-/* Buttons & Links */
+/* Buttons */
 button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
 .btn-primary { background-color: var(--green-primary); color: white; }
 .btn-primary:hover { background-color: #1b4332; }
@@ -77,47 +76,66 @@ button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-siz
 .footer-links a { color: var(--green-primary); text-decoration: none; font-weight: 600; margin: 0 5px; }
 .footer-links.faded { opacity: 0; }
 
-
 /* =========================================
-   NEW SLIDING LOGIN OVERLAY STYLES
+   2. SLIDING LOGIN OVERLAY ANIMATION
    ========================================= */
 
-/*The container that holds the split view. Sits on top of initial view.*/
 .login-overlay-container {
     position: absolute;
     top: 50%;
-    left: 50%;
-    /* Centers the overlay */
-    transform: translate(-50%, -50%);
+    /* Start hidden off-screen */
     width: 90%;
     max-width: 900px;
     height: 550px;
     z-index: 50;
-    /* Hidden state */
+    
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.5s ease 0.2s; /* Delayed fade in */
+    
+    /* Smooth transition for position and opacity */
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
 }
 
-/* Active state - becomes visible */
-.login-overlay-container.active {
+/* ANIMATION: Slide in from LEFT (Farmer) */
+.login-overlay-container.from-left {
+    left: 50%;
+    /* Starts far left */
+    transform: translate(-150%, -50%); 
+}
+.login-overlay-container.from-left.active {
     opacity: 1;
     pointer-events: all;
+    /* Ends at center */
+    transform: translate(-50%, -50%);
 }
 
-/* The actual split-screen box */
+/* ANIMATION: Slide in from RIGHT (Customer) */
+.login-overlay-container.from-right {
+    left: 50%;
+    /* Starts far right */
+    transform: translate(50%, -50%); 
+}
+.login-overlay-container.from-right.active {
+    opacity: 1;
+    pointer-events: all;
+    /* Ends at center */
+    transform: translate(-50%, -50%);
+}
+
+/* Layout of the box */
 .split-layout {
     display: flex;
     width: 100%;
     height: 100%;
     border-radius: 24px;
     overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    background: white;
 }
 
-/* ----- LEFT SIDE: COLORED INFO PANEL ----- */
+/* Info Panel (Left) */
 .info-panel {
-    flex: 4; /* Takes 40% width */
+    flex: 4;
     padding: 40px;
     display: flex;
     flex-direction: column;
@@ -127,82 +145,43 @@ button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-siz
     color: white;
     transition: background-color 0.3s ease;
 }
-
-/* Themes dynamically added by JS */
 .farmer-theme-bg { background-color: var(--green-primary); }
 .customer-theme-bg { background-color: var(--orange-accent); }
 
-.info-content img {
-    width: 180px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 50%; /* Circular image like reference */
-    border: 4px solid rgba(255,255,255,0.3);
-    margin-bottom: 25px;
-}
-
+.info-content img { width: 180px; height: 180px; object-fit: cover; border-radius: 50%; border: 4px solid rgba(255,255,255,0.3); margin-bottom: 25px; }
 .info-content h2 { font-size: 2rem; margin-bottom: 10px; color: white; }
 .info-content p { font-size: 1.1rem; opacity: 0.9; }
 
-
-/* ----- RIGHT SIDE: WHITE SLIDING FORM PANEL ----- */
+/* Form Panel (Right) */
 .form-panel {
-    flex: 6; /* Takes 60% width */
+    flex: 6;
     background: white;
     padding: 40px;
     display: flex;
     flex-direction: column;
-    
-    /* --- THE SLIDE ANIMATION --- */
-    /* Start pushed off-screen to the right */
-    transform: translateX(100%);
-    /* Smooth Bezier curve for elegant sliding */
-    transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-/* When container is active, slide form back to center (0) */
-.login-overlay-container.active .form-panel {
-    transform: translateX(0);
 }
 
 .back-link-wrapper { margin-bottom: 30px; }
 .back-link { color: #888; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s; }
 .back-link:hover { color: var(--text-dark); }
 
-.form-content-wrapper {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 400px;
-    margin: 0 auto; /* Center form horizontally in panel */
-    width: 100%;
-}
-
+.form-content-wrapper { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; max-width: 400px; margin: 0 auto; width: 100%; }
 .form-content-wrapper h2 { color: var(--text-dark); margin-bottom: 30px; font-size: 1.8rem; }
-
 .login-form-fields label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-dark); }
 .input-field { width: 100%; padding: 14px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 25px; font-size: 1rem; background: #f9f9f9; }
 .input-field:focus { outline: 2px solid var(--green-primary); border-color: transparent; }
 .full-width { width: 100%; }
-
-/* Register Links in the new form styling */
 .auth-switch { margin-top: 20px; font-size: 0.9rem; color: #666; text-align: center; }
 .auth-switch a { text-decoration: none; font-weight: 700; margin-left: 5px; transition: color 0.2s;}
 .auth-switch a:hover { text-decoration: underline; }
-
-/* Dynamic text colors for register link */
 .text-green { color: var(--green-primary) !important; }
 .text-orange { color: var(--orange-accent) !important; }
 
-/* Mobile Response */
+/* Mobile */
 @media (max-width: 850px) {
-    .login-overlay-container { height: auto; min-height: 600px; top: 55%;}
+    .login-overlay-container { height: auto; min-height: 600px; }
     .split-layout { flex-direction: column; }
-    /* On mobile, stack them instead of sliding sideways */
     .info-panel { flex: none; padding: 30px; }
     .info-content img { width: 120px; height: 120px; margin-bottom: 15px; }
-    .form-panel { flex: none; padding: 30px; transform: translateY(100px); opacity: 0; transition: all 0.5s ease 0.3s; }
-    /* Slide up on mobile */
-    .login-overlay-container.active .form-panel { transform: translateY(0); opacity: 1;}
+    .form-panel { flex: none; padding: 30px; }
 }

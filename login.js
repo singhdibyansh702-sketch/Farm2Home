@@ -3,25 +3,26 @@ document.addEventListener('DOMContentLoaded', () => {
     langSelect.addEventListener('change', changeLanguage);
 });
 
-// --- DATA DEFINITIONS FOR ROLES ---
+// --- DATA DEFINITIONS ---
 const roleData = {
     farmer: {
         imgSrc: "https://sl.bing.net/i4oWpIvTnbM",
         fallbackImg: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=800&auto=format&fit=crop",
         themeBg: "farmer-theme-bg",
         btnClass: "btn-primary",
-        linkClass: "text-green"
+        linkClass: "text-green",
+        slideDirection: "from-left" // Slide in from Left
     },
     customer: {
         imgSrc: "https://sl.bing.net/czYfpDTj2yW",
         fallbackImg: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop",
         themeBg: "customer-theme-bg",
         btnClass: "btn-secondary",
-        linkClass: "text-orange"
+        linkClass: "text-orange",
+        slideDirection: "from-right" // Slide in from Right
     }
 };
 
-// --- TRANSLATION DATA ---
 const translations = {
     en: {
         tagline: "Freshness Delivered.",
@@ -79,12 +80,7 @@ const translations = {
     }
 };
 
-
-// =========================================
-//   NEW ANIMATION LOGIC
-// =========================================
-
-let currentRole = null; // Track current role for translations
+let currentRole = null;
 
 function showLoginScreen(role) {
     currentRole = role;
@@ -98,65 +94,55 @@ function showLoginScreen(role) {
     const dynamicInfoPanel = document.getElementById('dynamic-info-panel');
     const loginImg = document.getElementById('login-img');
 
-    // 1. Fade out initial view
-    initialView.classList.add('faded');
-    footer.classList.add('faded');
-
-    // 2. Populate the Overlay with correct data BEFORE showing it
-    // Reset themes
-    dynamicInfoPanel.classList.remove('farmer-theme-bg', 'customer-theme-bg');
-    dynamicInfoPanel.classList.add(data.themeBg);
-
-    // Set Images with fallback
+    // 1. Prepare Overlay Content
+    dynamicInfoPanel.className = `info-panel ${data.themeBg}`; 
     loginImg.src = data.imgSrc;
     loginImg.onerror = function() { this.src = data.fallbackImg; };
-
-    // Set Text based on role and language
-    document.getElementById('login-role-title').innerText = t[role]; // e.g., t.farmer
+    
+    document.getElementById('login-role-title').innerText = t[role];
     document.getElementById('login-role-desc').innerText = t[role + 'Desc'];
     document.getElementById('login-form-header').innerText = t[role] + t.loginHeader;
+    
+    document.getElementById('dynamic-otp-btn').className = `btn-primary full-width ${data.btnClass}`;
+    document.getElementById('dynamic-reg-link').className = data.linkClass;
 
-    // Update buttons/links colors
-    const otpBtn = document.getElementById('dynamic-otp-btn');
-    otpBtn.className = `btn-primary full-width ${data.btnClass}`; // Keep base classes, add theme class
+    // 2. Set Slide Direction (Reset first)
+    overlayContainer.classList.remove('from-left', 'from-right', 'active');
+    
+    // Force reflow to ensure clean state before adding direction
+    void overlayContainer.offsetWidth; 
+    
+    overlayContainer.classList.add(data.slideDirection);
 
-    const regLink = document.getElementById('dynamic-reg-link');
-    regLink.className = data.linkClass;
-
-
-    // 3. Activate Overlay (triggers CSS slide animation)
-    // Small timeout ensures the fade-out happens first
+    // 3. Trigger Animations
+    // Small timeout ensures the class addition registers for transition
     setTimeout(() => {
+        initialView.classList.add('faded');
+        footer.classList.add('faded');
         overlayContainer.classList.add('active');
-    }, 300);
+    }, 10);
 }
-
 
 function resetView() {
     const initialView = document.getElementById('initial-view');
     const footer = document.getElementById('main-footer');
     const overlayContainer = document.getElementById('login-overlay');
 
-    // 1. Deactivate overlay (slides form back out)
+    // Slide out
     overlayContainer.classList.remove('active');
 
-    // 2. Fade initial view back in after overlay disappears
+    // Fade initial view back in
     setTimeout(() => {
         initialView.classList.remove('faded');
         footer.classList.remove('faded');
         currentRole = null;
-    }, 500);
+    }, 300);
 }
 
-
-// =========================================
-//   TRANSLATION LOGIC (UPDATED)
-// =========================================
 function changeLanguage() {
     const lang = document.getElementById("language-select").value;
     const t = translations[lang];
 
-    // Always update static elements
     document.getElementById("txt-tagline").innerText = t.tagline;
     document.getElementById("txt-title").innerText = t.title;
     document.getElementById("txt-subtitle").innerText = t.subtitle;
@@ -174,7 +160,6 @@ function changeLanguage() {
     document.getElementById("txt-new").innerText = t.newHere;
     document.getElementById("dynamic-reg-link").innerText = t.register;
 
-    // If the login screen is currently active, update its specific headers immediately
     if (currentRole) {
         document.getElementById('login-role-title').innerText = t[currentRole];
         document.getElementById('login-role-desc').innerText = t[currentRole + 'Desc'];
