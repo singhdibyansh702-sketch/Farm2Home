@@ -1,5 +1,5 @@
 /* =========================================
-   1. Global Settings & Reset
+   1. Global Settings
    ========================================= */
 :root {
     --green-primary: #2d6a4f;
@@ -20,7 +20,6 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    position: relative;
     overflow-x: hidden;
 }
 
@@ -28,160 +27,173 @@ body {
 .page-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=1600&auto=format&fit=crop'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2; }
 .page-background::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(245, 255, 245, 0.85); backdrop-filter: blur(5px); z-index: -1; }
 .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 5%; background: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
-.logo { display: flex; flex-direction: column; align-items: flex-start; }
 .logo-main { font-size: 1.8rem; font-weight: 700; color: var(--green-primary); white-space: nowrap; line-height: 1.1; }
 .highlight { color: var(--orange-accent); }
 .tagline { font-size: 0.8rem; color: #555; letter-spacing: 1px; text-transform: uppercase; }
 select { padding: 8px 16px; border-radius: 20px; border: 1px solid #ccc; background: white; cursor: pointer; font-family: inherit; font-size: 0.9rem; }
 
 /* Main Layout */
-main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; position: relative; width: 100%; }
+main { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; width: 100%; }
 
-/* Initial View Wrapper */
-#initial-view {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    width: 100%;
+.intro-text { 
+    text-align: center; margin-bottom: 40px; 
+    background: rgba(255, 255, 255, 0.6); 
+    padding: 20px 40px; border-radius: 16px; backdrop-filter: blur(5px); 
+    transition: opacity 0.5s ease;
 }
-#initial-view.faded {
-    opacity: 0;
-    transform: scale(0.95);
-    pointer-events: none;
-}
+.intro-text.hidden { opacity: 0; pointer-events: none; }
 
-.intro-text { text-align: center; margin-bottom: 40px; background: rgba(255, 255, 255, 0.6); padding: 20px 40px; border-radius: 16px; backdrop-filter: blur(5px); }
 h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--green-primary); }
 .intro-text p { font-size: 1.1rem; color: #444; }
 
-/* Cards */
-.card-container { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 900px; }
-.card { background: var(--white); width: 320px; border-radius: 20px; overflow: hidden; box-shadow: var(--card-shadow); transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-.card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(45, 106, 79, 0.25); }
-.card-image { width: 100%; aspect-ratio: 1 / 1; background-color: #f0f7f4; overflow: hidden; position: relative; }
+
+/* =========================================
+   2. EXPANDING CARD ANIMATION
+   ========================================= */
+
+.card-container {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px; 
+    /* INCREASED HEIGHT to accommodate larger cards */
+    height: 550px; 
+    align-items: center;
+}
+
+.card {
+    background: var(--white);
+    /* INCREASED HEIGHT to fit Marathi text + large image */
+    width: 320px; 
+    height: 520px;
+    
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(0,0,0,0.05);
+    
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    
+    display: flex;
+}
+
+/* STATE: Hidden (The other card) */
+.card.hidden {
+    width: 0;
+    opacity: 0;
+    margin: 0;
+    border: none;
+    pointer-events: none;
+}
+
+/* STATE: Expanded (The active card) */
+.card.expanded {
+    width: 800px; 
+}
+
+/* Inner Layout Row */
+.card-inner-row {
+    display: flex;
+    width: 800px; 
+    height: 100%;
+}
+
+
+/* ----- LEFT SIDE: PROFILE ----- */
+.profile-side {
+    width: 320px;
+    height: 100%;
+    flex-shrink: 0; 
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid transparent;
+    transition: border 0.3s;
+}
+
+.card.expanded .profile-side {
+    border-right: 1px solid #eee;
+}
+
+.card-image { 
+    width: 100%; 
+    /* Kept square as requested */
+    aspect-ratio: 1 / 1;  
+    background-color: #f0f7f4; 
+    overflow: hidden; 
+}
+
 .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
 .card:hover .card-image img { transform: scale(1.05); }
-.card-body { padding: 25px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+
+.card-body { padding: 25px; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; transition: opacity 0.3s; }
 .card-body h2 { font-size: 1.6rem; margin-bottom: 8px; color: var(--green-primary); }
 .card-body p { font-size: 0.95rem; color: #666; margin-bottom: 25px; }
 
-/* Buttons */
+/* Hide the 'Login' button when expanded */
+.card.expanded .card-body button {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+}
+
+
+/* ----- RIGHT SIDE: LOGIN FORM ----- */
+.login-side {
+    width: 0; 
+    opacity: 0;
+    background-color: white;
+    overflow: hidden;
+    transition: width 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease 0.1s;
+}
+
+.card.expanded .login-side {
+    width: 480px; 
+    opacity: 1;
+}
+
+.login-content {
+    width: 480px; 
+    padding: 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/* Form Styling */
+.back-link { color: #888; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 20px; }
+.back-link:hover { color: var(--text-dark); }
+
+h2 { color: var(--text-dark); margin-bottom: 20px; }
+label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-dark); }
+.input-field { width: 100%; padding: 14px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 25px; font-size: 1rem; background: #f9f9f9; }
+.input-field:focus { outline: 2px solid var(--green-primary); border-color: transparent; }
+
+/* Buttons & Links */
 button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
 .btn-primary { background-color: var(--green-primary); color: white; }
 .btn-primary:hover { background-color: #1b4332; }
 .btn-secondary { background-color: var(--orange-accent); color: white; }
 .btn-secondary:hover { background-color: #c45a3f; }
-.footer-links { margin-top: 50px; font-size: 0.9rem; padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border-radius: 20px; backdrop-filter: blur(5px); transition: opacity 0.3s ease;}
-.footer-links a { color: var(--green-primary); text-decoration: none; font-weight: 600; margin: 0 5px; }
-.footer-links.faded { opacity: 0; }
 
-/* =========================================
-   2. SLIDING LOGIN OVERLAY ANIMATION
-   ========================================= */
-
-.login-overlay-container {
-    position: absolute;
-    top: 50%;
-    /* Start hidden off-screen */
-    width: 90%;
-    max-width: 900px;
-    height: 550px;
-    z-index: 50;
-    
-    opacity: 0;
-    pointer-events: none;
-    
-    /* Smooth transition for position and opacity */
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease;
-}
-
-/* ANIMATION: Slide in from LEFT (Farmer) */
-.login-overlay-container.from-left {
-    left: 50%;
-    /* Starts far left */
-    transform: translate(-150%, -50%); 
-}
-.login-overlay-container.from-left.active {
-    opacity: 1;
-    pointer-events: all;
-    /* Ends at center */
-    transform: translate(-50%, -50%);
-}
-
-/* ANIMATION: Slide in from RIGHT (Customer) */
-.login-overlay-container.from-right {
-    left: 50%;
-    /* Starts far right */
-    transform: translate(50%, -50%); 
-}
-.login-overlay-container.from-right.active {
-    opacity: 1;
-    pointer-events: all;
-    /* Ends at center */
-    transform: translate(-50%, -50%);
-}
-
-/* Layout of the box */
-.split-layout {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-    background: white;
-}
-
-/* Info Panel (Left) */
-.info-panel {
-    flex: 4;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    transition: background-color 0.3s ease;
-}
-.farmer-theme-bg { background-color: var(--green-primary); }
-.customer-theme-bg { background-color: var(--orange-accent); }
-
-.info-content img { width: 180px; height: 180px; object-fit: cover; border-radius: 50%; border: 4px solid rgba(255,255,255,0.3); margin-bottom: 25px; }
-.info-content h2 { font-size: 2rem; margin-bottom: 10px; color: white; }
-.info-content p { font-size: 1.1rem; opacity: 0.9; }
-
-/* Form Panel (Right) */
-.form-panel {
-    flex: 6;
-    background: white;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-}
-
-.back-link-wrapper { margin-bottom: 30px; }
-.back-link { color: #888; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; transition: color 0.2s; }
-.back-link:hover { color: var(--text-dark); }
-
-.form-content-wrapper { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; max-width: 400px; margin: 0 auto; width: 100%; }
-.form-content-wrapper h2 { color: var(--text-dark); margin-bottom: 30px; font-size: 1.8rem; }
-.login-form-fields label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-dark); }
-.input-field { width: 100%; padding: 14px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 25px; font-size: 1rem; background: #f9f9f9; }
-.input-field:focus { outline: 2px solid var(--green-primary); border-color: transparent; }
-.full-width { width: 100%; }
 .auth-switch { margin-top: 20px; font-size: 0.9rem; color: #666; text-align: center; }
-.auth-switch a { text-decoration: none; font-weight: 700; margin-left: 5px; transition: color 0.2s;}
-.auth-switch a:hover { text-decoration: underline; }
-.text-green { color: var(--green-primary) !important; }
-.text-orange { color: var(--orange-accent) !important; }
+.auth-switch a { text-decoration: none; font-weight: 700; margin-left: 5px; }
+.text-green { color: var(--green-primary); }
+.text-orange { color: var(--orange-accent); }
+
+/* Footer */
+.footer-links { margin-top: 50px; font-size: 0.9rem; padding: 10px 20px; background: rgba(255, 255, 255, 0.8); border-radius: 20px; backdrop-filter: blur(5px); }
+.footer-links a { color: var(--green-primary); text-decoration: none; font-weight: 600; margin: 0 5px; }
 
 /* Mobile */
-@media (max-width: 850px) {
-    .login-overlay-container { height: auto; min-height: 600px; }
-    .split-layout { flex-direction: column; }
-    .info-panel { flex: none; padding: 30px; }
-    .info-content img { width: 120px; height: 120px; margin-bottom: 15px; }
-    .form-panel { flex: none; padding: 30px; }
+@media (max-width: 820px) {
+    .card.expanded { width: 100%; max-width: 400px; height: auto; flex-direction: column; }
+    .card-inner-row { flex-direction: column; width: 100%; }
+    .profile-side { width: 100%; height: auto; }
+    .card-image { height: 200px; }
+    .login-side { width: 100% !important; } 
+    .login-content { width: 100%; padding: 30px; }
+    .card.expanded .login-side { height: auto; padding-bottom: 20px; }
 }

@@ -3,26 +3,43 @@ document.addEventListener('DOMContentLoaded', () => {
     langSelect.addEventListener('change', changeLanguage);
 });
 
-// --- DATA DEFINITIONS ---
-const roleData = {
-    farmer: {
-        imgSrc: "https://sl.bing.net/i4oWpIvTnbM",
-        fallbackImg: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?q=80&w=800&auto=format&fit=crop",
-        themeBg: "farmer-theme-bg",
-        btnClass: "btn-primary",
-        linkClass: "text-green",
-        slideDirection: "from-left" // Slide in from Left
-    },
-    customer: {
-        imgSrc: "https://sl.bing.net/czYfpDTj2yW",
-        fallbackImg: "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=800&auto=format&fit=crop",
-        themeBg: "customer-theme-bg",
-        btnClass: "btn-secondary",
-        linkClass: "text-orange",
-        slideDirection: "from-right" // Slide in from Right
-    }
-};
+/* --- ANIMATION LOGIC --- */
 
+function expandCard(role) {
+    const farmerCard = document.getElementById('card-farmer');
+    const customerCard = document.getElementById('card-customer');
+    const introText = document.getElementById('intro-text');
+
+    // Fade out Welcome Text
+    introText.classList.add('hidden');
+
+    if (role === 'farmer') {
+        // Expand Farmer, Hide Customer
+        customerCard.classList.add('hidden');
+        farmerCard.classList.add('expanded');
+    } else {
+        // Expand Customer, Hide Farmer
+        farmerCard.classList.add('hidden');
+        customerCard.classList.add('expanded');
+    }
+}
+
+function resetCards() {
+    const farmerCard = document.getElementById('card-farmer');
+    const customerCard = document.getElementById('card-customer');
+    const introText = document.getElementById('intro-text');
+
+    // Remove classes to revert to original state
+    farmerCard.classList.remove('expanded', 'hidden');
+    customerCard.classList.remove('expanded', 'hidden');
+
+    // Show Welcome Text again
+    setTimeout(() => {
+        introText.classList.remove('hidden');
+    }, 300);
+}
+
+/* --- TRANSLATION DATA --- */
 const translations = {
     en: {
         tagline: "Freshness Delivered.",
@@ -80,89 +97,44 @@ const translations = {
     }
 };
 
-let currentRole = null;
-
-function showLoginScreen(role) {
-    currentRole = role;
-    const lang = document.getElementById("language-select").value;
-    const t = translations[lang];
-    const data = roleData[role];
-
-    const initialView = document.getElementById('initial-view');
-    const footer = document.getElementById('main-footer');
-    const overlayContainer = document.getElementById('login-overlay');
-    const dynamicInfoPanel = document.getElementById('dynamic-info-panel');
-    const loginImg = document.getElementById('login-img');
-
-    // 1. Prepare Overlay Content
-    dynamicInfoPanel.className = `info-panel ${data.themeBg}`; 
-    loginImg.src = data.imgSrc;
-    loginImg.onerror = function() { this.src = data.fallbackImg; };
-    
-    document.getElementById('login-role-title').innerText = t[role];
-    document.getElementById('login-role-desc').innerText = t[role + 'Desc'];
-    document.getElementById('login-form-header').innerText = t[role] + t.loginHeader;
-    
-    document.getElementById('dynamic-otp-btn').className = `btn-primary full-width ${data.btnClass}`;
-    document.getElementById('dynamic-reg-link').className = data.linkClass;
-
-    // 2. Set Slide Direction (Reset first)
-    overlayContainer.classList.remove('from-left', 'from-right', 'active');
-    
-    // Force reflow to ensure clean state before adding direction
-    void overlayContainer.offsetWidth; 
-    
-    overlayContainer.classList.add(data.slideDirection);
-
-    // 3. Trigger Animations
-    // Small timeout ensures the class addition registers for transition
-    setTimeout(() => {
-        initialView.classList.add('faded');
-        footer.classList.add('faded');
-        overlayContainer.classList.add('active');
-    }, 10);
-}
-
-function resetView() {
-    const initialView = document.getElementById('initial-view');
-    const footer = document.getElementById('main-footer');
-    const overlayContainer = document.getElementById('login-overlay');
-
-    // Slide out
-    overlayContainer.classList.remove('active');
-
-    // Fade initial view back in
-    setTimeout(() => {
-        initialView.classList.remove('faded');
-        footer.classList.remove('faded');
-        currentRole = null;
-    }, 300);
-}
-
 function changeLanguage() {
     const lang = document.getElementById("language-select").value;
     const t = translations[lang];
 
+    // Main Headers
     document.getElementById("txt-tagline").innerText = t.tagline;
     document.getElementById("txt-title").innerText = t.title;
     document.getElementById("txt-subtitle").innerText = t.subtitle;
+    
+    // Farmer Card
     document.getElementById("txt-farmer").innerText = t.farmer;
     document.getElementById("txt-farmer-desc").innerText = t.farmerDesc;
+    document.getElementById("txt-btn-1").innerText = t.btn + (lang === "en" ? "Farmer" : t.farmer);
+    
+    // Customer Card
     document.getElementById("txt-customer").innerText = t.customer;
     document.getElementById("txt-customer-desc").innerText = t.customerDesc;
-    document.getElementById("txt-btn-1").innerText = t.btn + (lang === "en" ? "Farmer" : t.farmer);
     document.getElementById("txt-btn-2").innerText = t.btn + (lang === "en" ? "Customer" : t.customer);
+    
+    // Login Forms
+    document.getElementById("txt-back-1").innerText = t.back;
+    document.getElementById("txt-back-2").innerText = t.back;
+    
+    document.getElementById("txt-login-header-1").innerText = t.farmer + t.loginHeader;
+    document.getElementById("txt-login-header-2").innerText = t.customer + t.loginHeader;
+    
+    document.getElementById("txt-label-1").innerText = t.mobileLabel;
+    document.getElementById("txt-label-2").innerText = t.mobileLabel;
+    
+    document.getElementById("txt-otp-1").innerText = t.sendOtp;
+    document.getElementById("txt-otp-2").innerText = t.sendOtp;
+    
+    document.getElementById("txt-new-1").innerText = t.newHere;
+    document.getElementById("txt-new-2").innerText = t.newHere;
+    document.getElementById("txt-reg-1").innerText = t.register;
+    document.getElementById("txt-reg-2").innerText = t.register;
+
+    // Footer
     document.getElementById("txt-guest").innerText = t.guest;
     document.getElementById("txt-help").innerText = t.help;
-    document.getElementById("txt-back").innerText = t.back;
-    document.getElementById("txt-label-mobile").innerText = t.mobileLabel;
-    document.getElementById("txt-otp").innerText = t.sendOtp;
-    document.getElementById("txt-new").innerText = t.newHere;
-    document.getElementById("dynamic-reg-link").innerText = t.register;
-
-    if (currentRole) {
-        document.getElementById('login-role-title').innerText = t[currentRole];
-        document.getElementById('login-role-desc').innerText = t[currentRole + 'Desc'];
-        document.getElementById('login-form-header').innerText = t[currentRole] + t.loginHeader;
-    }
 }
