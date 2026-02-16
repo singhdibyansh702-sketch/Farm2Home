@@ -1,6 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
     const langSelect = document.getElementById('language-select');
     langSelect.addEventListener('change', changeLanguage);
+
+    // --- MODAL LOGIC START ---
+    const modalOverlay = document.getElementById('help-modal');
+    // Updated ID to target the footer link
+    const openBtn = document.getElementById('txt-help'); 
+    const closeBtn = document.getElementById('close-modal-btn');
+
+    // Function to Open Modal
+    const openModal = (e) => {
+        if(e) e.preventDefault(); // Prevent default anchor jump
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    };
+
+    // Function to Close Modal
+    const closeModal = () => {
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = ''; // Restore background scrolling
+    };
+
+    // Event Listeners for Modal
+    if(openBtn) openBtn.addEventListener('click', openModal);
+    if(closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    // Close modal if user clicks outside the container
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            closeModal();
+        }
+    });
+    // --- MODAL LOGIC END ---
 });
 
 /* --- ANIMATION LOGIC --- */

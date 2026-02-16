@@ -57,24 +57,19 @@ h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--green-primary); }
     justify-content: center;
     width: 100%;
     max-width: 1200px; 
-    /* INCREASED HEIGHT to accommodate larger cards */
     height: 550px; 
     align-items: center;
 }
 
 .card {
     background: var(--white);
-    /* INCREASED HEIGHT to fit Marathi text + large image */
     width: 320px; 
     height: 520px;
-    
     border-radius: 20px;
     overflow: hidden;
     box-shadow: var(--card-shadow);
     border: 1px solid rgba(0,0,0,0.05);
-    
     transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    
     display: flex;
 }
 
@@ -117,7 +112,6 @@ h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--green-primary); }
 
 .card-image { 
     width: 100%; 
-    /* Kept square as requested */
     aspect-ratio: 1 / 1;  
     background-color: #f0f7f4; 
     overflow: hidden; 
@@ -197,3 +191,145 @@ button { width: 100%; padding: 14px; border: none; border-radius: 12px; font-siz
     .login-content { width: 100%; padding: 30px; }
     .card.expanded .login-side { height: auto; padding-bottom: 20px; }
 }
+
+/* =========================================
+   3. NEED HELP MODAL & GLASSMORPHISM
+   ========================================= */
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); 
+    z-index: 1000;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease-out, visibility 0.4s ease-out;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Modal Container (Glassmorphism) */
+.modal-container {
+    width: 90%;
+    max-width: 600px;
+    max-height: 85vh; 
+    overflow-y: auto; 
+    
+    background: rgba(255, 255, 255, 0.2); 
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    color: #fff;
+    
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-container {
+    transform: translateY(0);
+}
+
+/* Close Icon */
+.close-icon {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    font-size: 28px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+    width: auto;
+    padding: 0;
+}
+
+.close-icon:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+/* Typography */
+.modal-header {
+    text-align: center;
+    margin-bottom: 25px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.modal-header h2 { margin: 0; font-size: 1.5rem; color: #fff; }
+.modal-header p { margin-top: 5px; font-size: 0.9rem; opacity: 0.9; color: #fff; }
+
+h3 {
+    color: #a8ffb2; 
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding-bottom: 8px;
+    margin-top: 0;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.divider { border: 0; height: 1px; background: rgba(255, 255, 255, 0.2); margin: 20px 0; }
+
+/* Accordion */
+details.accordion-item {
+    background: rgba(0, 0, 0, 0.2); 
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: background 0.3s;
+}
+
+details.accordion-item:hover { background: rgba(0, 0, 0, 0.3); }
+
+summary {
+    padding: 15px;
+    cursor: pointer;
+    font-weight: 500;
+    list-style: none; 
+    position: relative;
+    padding-right: 40px; 
+    outline: none;
+}
+
+summary::after {
+    content: '+';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    font-weight: bold;
+    transition: transform 0.3s;
+}
+
+details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+
+.accordion-content {
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.accordion-content p { margin: 8px 0; color: #fff; }
+
+/* Scrollbar */
+.modal-container::-webkit-scrollbar { width: 8px; }
+.modal-container::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }

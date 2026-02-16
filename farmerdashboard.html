@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farmer Dashboard | Farm2Home</title>
+    <link rel="stylesheet" href="farmerdashboard.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div id="overlay" class="overlay"></div>
+
+    <header class="navbar">
+      <div class="nav-left">
+        <button id="menu-btn" class="icon-btn">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="nav-center">
+        <h1 class="logo">Farm<span class="highlight">2</span>Home</h1>
+      </div>
+
+      <div class="nav-right">
+        <button class="icon-btn notification-btn">
+          <i class="fa-regular fa-bell"></i>
+          <span class="badge">2</span>
+        </button>
+        <div class="profile-circle">
+          <img src="https://via.placeholder.com/40" alt="User" />
+        </div>
+      </div>
+    </header>
+
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <h3>Menu</h3>
+        <button id="close-btn" class="icon-btn">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="#" class="menu-item active"
+          ><i class="fa-solid fa-home"></i> Dashboard</a
+        >
+        <a href="#" class="menu-item"
+          ><i class="fa-solid fa-leaf"></i> My Crops</a
+        >
+        <a href="#" class="menu-item"
+          ><i class="fa-solid fa-wallet"></i> My Earnings</a
+        >
+        <a href="#" class="menu-item"><i class="fa-solid fa-box"></i> Orders</a>
+        <a href="#" class="menu-item"
+          ><i class="fa-solid fa-chart-line"></i> Mandi Rates
+          <span class="new-tag">New</span></a
+        >
+        <a href="#" class="menu-item"
+          ><i class="fa-solid fa-cloud-sun"></i> Weather Forecast
+          <span class="new-tag">New</span></a
+        >
+        <a href="#" class="menu-item"
+          ><i class="fa-solid fa-users"></i> Kisan Community</a
+        >
+        <a href="#" class="menu-item"
+          ><i class="fa-solid fa-landmark"></i> Govt Schemes</a
+        >
+        <a href="#" class="menu-item"
+          ><i class="fa-solid fa-headset"></i> Need Help</a
+        >
+        <div class="divider"></div>
+        <a href="#" class="menu-item logout"
+          ><i class="fa-solid fa-sign-out-alt"></i> Logout</a
+        >
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <section class="welcome-section">
+        <h2>Namaste, Ramu! 🚜</h2>
+        <p>Here is what's happening on your farm today.</p>
+      </section>
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon income">
+            <i class="fa-solid fa-indian-rupee-sign"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Total Sales</h3>
+            <p class="stat-value">₹4000</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon products">
+            <i class="fa-solid fa-carrot"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Active Listings</h3>
+            <p class="stat-value">4</p>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon orders">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <div class="stat-info">
+            <h3>Pending Orders</h3>
+            <p class="stat-value">2</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="recent-activity">
+        <h3>Recent Orders</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Item</th>
+                <th>Qty</th>
+                <th>Status</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#ORD-202</td>
+                <td>Fresh Tomatoes</td>
+                <td>50 kg</td>
+                <td><span class="status pending">Pending</span></td>
+                <td>₹2,000</td>
+              </tr>
+              <tr>
+                <td>#ORD-201</td>
+                <td>Potatoes</td>
+                <td>100 kg</td>
+                <td><span class="status shipped">Shipped</span></td>
+                <td>₹3,500</td>
+              </tr>
+              <tr>
+                <td>#ORD-199</td>
+                <td>Onions</td>
+                <td>80 kg</td>
+                <td><span class="status delivered">Delivered</span></td>
+                <td>₹4,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="farmerdashboard.js"></script>
+  </body>
+</html>
